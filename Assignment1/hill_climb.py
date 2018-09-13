@@ -9,59 +9,64 @@ def hill_climb(cities,distances,number):
 
     shortest_route = list(range(number))
     random.shuffle(shortest_route)
-
     best_distance = calculate_distance(shortest_route,distances)
-    # Leting the swaping run 2^10 times.
-    for i in range(2**10):
+
+    for i in range(1000):
         random_genes = random.sample(list(shortest_route),2)
-    #    print(f'{random_tuples}')
         shortest_route[random_genes[0]], shortest_route[random_genes[1]] = shortest_route[random_genes[1]], shortest_route[random_genes[0]]
         tmp = calculate_distance(shortest_route,distances)
         '''
-        If the child is worse than parent, discard the mutation,and use parents genom again.
+        If the child is worse then parent, discard the mutation,and use parents genom again.
         '''
         if tmp > best_distance:
             shortest_route[random_genes[1]], shortest_route[random_genes[0]] = shortest_route[random_genes[0]], shortest_route[random_genes[1]]
+        else:
+            best_distance = tmp
 
-    return shortest_route,best_distance
-    #    print(str(random_genes))
-    #    print(f'{random_tuples}')
+    return shortest_route, best_distance
 
 def hill_climb_start(cities, distances, low, high):
 
+    # N = 10 cities
     route_array = list()
     distance_array = []
+    start_time = time.time()
 
     for i in range(20):
         shortest_route, best_distance = hill_climb(cities,distances,low)
         route_array.append(shortest_route)
         distance_array.append(best_distance)
 
-    shortest_route_index = np.argmin(distance_array)
-    longest_route_index = np.argmax(distance_array)
-    best_city_route = geno_to_pheno(route_array[shortest_route_index],cities)
-    best_city_distance = distance_array[shortest_route_index]
-    worst_city_distance = distance_array[longest_route_index]
+    end_time = time.time() - start_time
+    print_answers(route_array, distance_array,cities,low,end_time)
 
 
-    print(f'10 cities visited:\n Tour with shortest distance is: {best_distance:2.2f}.\n Tour with longest distance is:  {worst_city_distance:2.2f}.')
-
+    # N = 24 cities
     route_array.clear()
     distance_array.clear()
+    start_time = time.time()
 
     for i in range(20):
         shortest_route, best_distance = hill_climb(cities,distances,high)
         route_array.append(shortest_route)
         distance_array.append(best_distance)
 
+    end_time = time.time() - start_time
+    print_answers(route_array, distance_array,cities,high,end_time)
+
+
+def print_answers(route_array, distance_array,cities,number,time):
+
     shortest_route_index = np.argmin(distance_array)
     longest_route_index = np.argmax(distance_array)
-    best_city_route = geno_to_pheno(route_array[shortest_route_index],cities)
+    phenotype = geno_to_pheno(route_array[shortest_route_index],cities)
     best_city_distance = distance_array[shortest_route_index]
     worst_city_distance = distance_array[longest_route_index]
+    mean_distances = sum(distance_array) / float(len(distance_array))
+    standard_diviation = np.std(distance_array)
 
-    print(f'24 cities visited:\n Tour with shortest distance is: {best_distance:2.2f}.\n Tour with longest distance is:  {worst_city_distance:2.2f}.')
 
+    print(f'Runtime for {number} cities visited: {time:2.4f} seconds with {20:d} random starting points and {1000:d} allele swaps.\n Length of best tour is: {best_city_distance:2.2f}.\n Length of worst tour is: {worst_city_distance:2.2f}.\n Length of average tour is: {mean_distances:2.2f}.\n Standard deviation is: {standard_diviation:2.2f}\n. Route of best tour is:{phenotype}.\n')
 
 
 def reader(filename):
