@@ -6,7 +6,8 @@ import random
 
 
 def hill_climb(cities,distances,number):
-    shortest_route = np.arange(number)
+
+    shortest_route = list(range(number))
     random.shuffle(shortest_route)
 
     best_distance = calculate_distance(shortest_route,distances)
@@ -28,16 +29,38 @@ def hill_climb(cities,distances,number):
 
 def hill_climb_start(cities, distances, low, high):
 
-    shortest_route, best_distance = hill_climb(cities,distances,low)
-    longest_route, worst_distance = best_route, shortest_route
+    route_array = list()
+    distance_array = []
 
     for i in range(20):
-        tmp_shortest_route, tmp_best_distance = hill_climb(cities,distances,low)
-        
+        shortest_route, best_distance = hill_climb(cities,distances,low)
+        route_array.append(shortest_route)
+        distance_array.append(best_distance)
+
+    shortest_route_index = np.argmin(distance_array)
+    longest_route_index = np.argmax(distance_array)
+    best_city_route = geno_to_pheno(route_array[shortest_route_index],cities)
+    best_city_distance = distance_array[shortest_route_index]
+    worst_city_distance = distance_array[longest_route_index]
 
 
+    print(f'10 cities visited:\n Tour with shortest distance is: {best_distance:2.2f}.\n Tour with longest distance is:  {worst_city_distance:2.2f}.')
 
-    best_route, shortest_route = hill_climb(cities,distances,high)
+    route_array.clear()
+    distance_array.clear()
+
+    for i in range(20):
+        shortest_route, best_distance = hill_climb(cities,distances,high)
+        route_array.append(shortest_route)
+        distance_array.append(best_distance)
+
+    shortest_route_index = np.argmin(distance_array)
+    longest_route_index = np.argmax(distance_array)
+    best_city_route = geno_to_pheno(route_array[shortest_route_index],cities)
+    best_city_distance = distance_array[shortest_route_index]
+    worst_city_distance = distance_array[longest_route_index]
+
+    print(f'24 cities visited:\n Tour with shortest distance is: {best_distance:2.2f}.\n Tour with longest distance is:  {worst_city_distance:2.2f}.')
 
 
 
