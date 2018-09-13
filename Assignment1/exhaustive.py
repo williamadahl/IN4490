@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import csv
 from itertools import permutations
 import numpy as np
