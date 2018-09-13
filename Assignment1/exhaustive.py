@@ -11,7 +11,6 @@ def exhaustive(cities, distances,number):
     shortest_route = np.zeros(number)
     best_distance = sys.maxsize
     perm = permutations(perm_tuples)
-    #print(distances)
 
     for p in perm:
         tmp = calculate_distance(p,distances)
@@ -19,9 +18,7 @@ def exhaustive(cities, distances,number):
             best_distance = tmp
             shortest_route = p
 
-
     return shortest_route, best_distance
-
 
 
 '''
@@ -34,19 +31,27 @@ def calculate_distance(p,distances):
     sum = 0
     for i in range(len(p)-1):
         sum += distances[p[i],p[i+1]]
-        print('inside for' + str(distances[p[i],p[i+1]]))
-
 
     sum += distances[p[-1],p[0]]
-
     return sum
 
-def exhautive_plotter():
-    return 0
+def geno_to_pheno(genotype, cities):
+    pheno = []
+    for i in genotype:
+        pheno.append(cities[i])
+    return pheno
 
-def exhaustive_start():
-    return 0
 
+def exhaustive_start(cities, distances,N):
+
+    for i in range(6,N+1):
+        start_time = time.time()
+        shortest_route, best_distance = exhaustive(cities,distances,i)
+        end_time = time.time() - start_time
+        print(f'Runtime for {i} cities is: {end_time:2.5f} seconds.\nMinimum distance is: {best_distance:2.2f}.')
+        if i == 10:
+            phenotype = geno_to_pheno(shortest_route,cities)
+            print(f'Shortest tour for {i} cities:\n{phenotype}')
 
 
 def reader(filename):
@@ -56,7 +61,6 @@ def reader(filename):
 
     cities = []
     distances = np.zeros((len(data)-1,len(data)-1))
-    #print(str(distances))
     city_line = 0
 
     for line in data:
@@ -68,11 +72,8 @@ def reader(filename):
                 distances[city_line - 1,i] = line[i]
 
         city_line += 1
-
     return cities, distances
 
 if __name__ == '__main__':
     cities, distances = reader("european_cities.csv")
-    #print(str(cities))
-    #print(str(distances))
-    test,tull = exhaustive(cities, distances, 4)
+    exhaustive_start(cities, distances, 10)
