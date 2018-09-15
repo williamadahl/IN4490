@@ -3,10 +3,25 @@
 Code based on solutions for week 2 tasks. Thank you TA, you are the MVP
 '''
 import csv
-import random
+from random import shuffle
 import time
 import numpy as np
 
+
+def make_population(size):
+
+    population = []
+    for i in range(size):
+        citizen = np.random.permutation(size)
+        print(citizen)
+        population.append(citizen)
+
+    for i in range(len(population)):
+        print(f'Here is citizen number {i}: {population[i]}')
+    return population
+
+
+def parent_selection(population, distances, ):
 
 
 
@@ -67,4 +82,9 @@ def reader(filename):
 
 if __name__ == '__main__':
         cities, distances = reader("european_cities.csv")
-        pmx_start()
+        # 10 cities
+
+        generations = 50
+        population_size = 5
+
+        population = make_population(population_size)
