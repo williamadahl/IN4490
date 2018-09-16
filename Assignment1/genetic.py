@@ -49,9 +49,13 @@ def parent_selection(population, distances, selection_size):
 
 
 def mutate_child(child):
-    start = random.randint(len(child))
-    stop = random.randint(len(child))
-    print(f'{start}:{stop}')
+    half = len(child) // 2 #rounded down
+    start = randint(0, len(child)-half)
+    stop = half + start
+    #print(f'{start}:{stop}')
+    #print(f'child before: {child}')
+    child[start:stop] = child[start:stop][::-1]
+    #print(f'child after: {child}')
 
     return child
 
@@ -148,3 +152,4 @@ if __name__ == '__main__':
         child_one, child_two = pair_pmx(parent_one, parent_two)
         print(child_one)
         print(child_two)
+        child_one, child_two = mutate_child(child_one), mutate_child(child_two)
