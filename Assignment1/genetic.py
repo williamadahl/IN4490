@@ -102,7 +102,6 @@ def reader(filename):
 
 def genetic(cities, distances, population_size, max_generations, selection_size, mutation_rate,num_cities):
 
-    runs = 0
     population = make_population(population_size, num_cities)
     elites = []
     average_fitness = []
@@ -226,15 +225,21 @@ def genetic_start(cities, distances, population_size, max_generations, num_citie
         glb_average_dist = np.sum(average_distance_all_run)/len(average_distance_all_run)
         glb_std = np.sum(std_all_runs)/len(std_all_runs)
         phenotype = geno_to_pheno(glb_best_route, cities)
+        ret_fit = planet_fittnes.mean(axis=0)
 
-        print(f'Here is the std div : {std_all_runs}')
         print(f'{num_cities} cities, with {population_size} population and {max_generations} generations:\n Length best tour: {glb_best_distance:2.2f}.\n Length of worst tour: {glb_worst_dist:2.2f}.\n Length of average tour: {glb_average_dist:2.2f}.\n Standard diviation is: {glb_std}.\n Route of the best tour is: {phenotype}\n Searched {total_searched} routes.\n Runtime: {end_time:2.4f}\n\n')
+
+        return ret_fit
 
 def geno_to_pheno(genotype, cities):
     pheno = []
     for i in genotype:
         pheno.append(cities[i])
     return pheno
+
+def plotter(fit, pop_size, gens):
+
+
 
 
 if __name__ == '__main__':
@@ -247,11 +252,17 @@ if __name__ == '__main__':
         generations = 50
 
 
+        for pop in population_size:
+            fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
+            all_stars_fitness.append(fit)
 
+        plotter(all_stars_fitness, population_size, generations)
+
+
+        num_cities = 24
+        population_size = [100, 200, 300]
+        generations = 100
 
         for pop in population_size:
-            genetic_start(cities, distances, pop, generations, num_cities,runs)
-
-        N_cities = 24
-        population_size= [100, 200, 300]
-        generations = 100
+            fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
+            all_stars_fitness.append(fit)
