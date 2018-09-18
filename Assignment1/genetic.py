@@ -7,6 +7,7 @@ from random import shuffle , sample, randint, random
 import time
 import numpy as np
 from sys import exit
+import matplotlib.pyplot as plt
 
 
 def make_population(size,N):
@@ -126,7 +127,6 @@ def genetic(cities, distances, population_size, max_generations, selection_size,
             lucky_citizen = population[randint(0,population_size-1)]
             new_population.append(lucky_citizen)
 
-
         while len(new_population) < population_size:
 
             parent_one, parent_two = parent_selection(population, distances, selection_size)
@@ -142,20 +142,15 @@ def genetic(cities, distances, population_size, max_generations, selection_size,
                     new_population[i] = mutate_citizen(new_population[i])
 
 
-
         average_fitness.append(np.mean(elites)) # save mean of elites to fitness as required
         searched += len(population)
         population = new_population
         generation += 1
 
-
-
     population_distances = []
 
     for i in range(population_size):
         population_distances.append(calculate_distance(population[i],distances))
-
-    runs += 1
 
     #The best individual of last generation
     best_individual_index = np.argmin(population_distances)
@@ -172,12 +167,9 @@ def genetic(cities, distances, population_size, max_generations, selection_size,
     #Standard_diviation
     standard_diviation = np.std(population_distances)
 
-
-    #exit(0)
     return best_individual_distance, best_individual_route, worst_individual_distance, average_distance,\
     standard_diviation, average_fitness, searched
 
-#    return population, population_distances, average_fitness, searched
 def calculate_distance(p,distances):
 
     sum = 0
@@ -237,9 +229,24 @@ def geno_to_pheno(genotype, cities):
         pheno.append(cities[i])
     return pheno
 
-def plotter(fit, pop_size, gens):
+def plotter(fit, pop_size, gens, name):
+    line1 = fit[0]
+    line2 = fit[1]
+    line3 = fit[2]
+
+    plt.title = ("Average fitness of each generation")
+    plt.xlabel = ("Generations")
+    plt.ylabel = ("Route length")
+    plt.plot(line1, label='Population size: ' + str(pop_size[0]), color = 'C0')
+    plt.plot(line2, label='Population size: ' + str(pop_size[1]), color = 'C1')
+    plt.plot(line3, label='Population size: ' + str(pop_size[2]), color = 'C2')
 
 
+    plt.legend()
+    plt.savefig(name, dpi= 'figure', format ='png')
+    plt.show()
+
+    return 0
 
 
 if __name__ == '__main__':
@@ -256,9 +263,13 @@ if __name__ == '__main__':
             fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
             all_stars_fitness.append(fit)
 
-        plotter(all_stars_fitness, population_size, generations)
+        print(all_stars_fitness)
+        plotter(all_stars_fitness, population_size, generations,'ga_plt_10.png')
 
+        exit(0)
 
+        # 24 cities
+        np.empty(all_stars_fitness)
         num_cities = 24
         population_size = [100, 200, 300]
         generations = 100
@@ -266,3 +277,5 @@ if __name__ == '__main__':
         for pop in population_size:
             fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
             all_stars_fitness.append(fit)
+
+        plotter(all_stars_fitness, population_size, generations,'ga_plt_24.png')
