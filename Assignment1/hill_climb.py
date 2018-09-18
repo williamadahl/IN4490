@@ -3,6 +3,7 @@ import csv
 import time
 import numpy as np
 import random
+from functions import *
 
 
 def hill_climb(cities,distances,number):
@@ -68,39 +69,6 @@ def print_answers(route_array, distance_array,cities,number,time):
 
     print(f'Runtime for {number} cities visited: {time:2.4f} seconds with {20:d} random starting points and {1000:d} allele swaps.\n Length of best tour is: {best_city_distance:2.2f}.\n Length of worst tour is: {worst_city_distance:2.2f}.\n Length of average tour is: {mean_distances:2.2f}.\n Standard deviation is: {standard_diviation:2.2f}\n. Route of best tour is:{phenotype}.\n')
 
-
-def reader(filename):
-    with open(filename,'r') as f:
-        data = list(csv.reader(f, delimiter=';'))
-
-    cities = []
-    distances = np.zeros((len(data)-1, len(data)-1))
-    city_line = 0
-
-    for line in data:
-        if city_line == 0:
-            for i in range(len(line)):
-                cities.append(line[i])
-        else:
-            for i in range(len(line)):
-                distances[city_line - 1,i] = line[i]
-        city_line += 1
-    return cities, distances
-
-def geno_to_pheno(genotype, cities):
-    pheno = []
-    for i in genotype:
-        pheno.append(cities[i])
-    return pheno
-
-def calculate_distance(p,distances):
-
-    sum = 0
-    for i in range(len(p)-1):
-        sum += distances[p[i],p[i+1]]
-
-    sum += distances[p[-1],p[0]]
-    return sum
 
 if __name__ == '__main__':
     cities, distances = reader("european_cities.csv")

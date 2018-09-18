@@ -81,26 +81,6 @@ def pair_pmx(p1,p2):
     return pmx(p1,p2,start,stop), pmx(p2,p1,start,stop) # call to pmx and create the crossover children.
 
 
-def reader(filename):
-
-    with open(filename, "r") as f:
-        data = list(csv.reader(f, delimiter=';'))
-
-    cities = []
-    distances = np.zeros((len(data)-1,len(data)-1))
-    city_line = 0
-
-    for line in data:
-        if city_line == 0:
-             for i in range(len(line)):
-                 cities.append(line[i])
-        else:
-            for i in range(len(line)):
-                distances[city_line - 1,i] = line[i]
-
-        city_line += 1
-    return cities, distances
-
 def genetic(cities, distances, population_size, max_generations, selection_size, mutation_rate,num_cities):
 
     population = make_population(population_size, num_cities)
@@ -170,16 +150,6 @@ def genetic(cities, distances, population_size, max_generations, selection_size,
     return best_individual_distance, best_individual_route, worst_individual_distance, average_distance,\
     standard_diviation, average_fitness, searched
 
-def calculate_distance(p,distances):
-
-    sum = 0
-    for i in range(len(p)-1):
-        sum += distances[p[i],p[i+1]]
-
-    sum += distances[p[-1],p[0]]
-    return sum
-
-
 def genetic_start(cities, distances, population_size, max_generations, num_cities,runs):
 
 
@@ -222,12 +192,6 @@ def genetic_start(cities, distances, population_size, max_generations, num_citie
         print(f'{num_cities} cities, with {population_size} population and {max_generations} generations:\n Length best tour: {glb_best_distance:2.2f}.\n Length of worst tour: {glb_worst_dist:2.2f}.\n Length of average tour: {glb_average_dist:2.2f}.\n Standard diviation is: {glb_std}.\n Route of the best tour is: {phenotype}\n Searched {total_searched} routes.\n Runtime: {end_time:2.4f}\n\n')
 
         return ret_fit
-
-def geno_to_pheno(genotype, cities):
-    pheno = []
-    for i in genotype:
-        pheno.append(cities[i])
-    return pheno
 
 def plotter(fit, pop_size, gens, name):
     line1 = fit[0]

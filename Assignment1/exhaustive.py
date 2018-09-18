@@ -5,6 +5,7 @@ from itertools import permutations
 import numpy as np
 import sys
 import time
+from functions import *
 
 
 def exhaustive(cities, distances,number):
@@ -23,27 +24,6 @@ def exhaustive(cities, distances,number):
     return shortest_route, best_distance
 
 
-'''
-calculate distance from starting point, to next visited, and traveling form visited to
-next destination acording to the permutation.
-In the end adding the distance form last city visited, back to starting city
-'''
-def calculate_distance(p,distances):
-
-    sum = 0
-    for i in range(len(p)-1):
-        sum += distances[p[i],p[i+1]]
-
-    sum += distances[p[-1],p[0]]
-    return sum
-
-def geno_to_pheno(genotype, cities):
-    pheno = []
-    for i in genotype:
-        pheno.append(cities[i])
-    return pheno
-
-
 def exhaustive_start(cities, distances,N):
 
     for i in range(6,N+1):
@@ -55,26 +35,6 @@ def exhaustive_start(cities, distances,N):
             phenotype = geno_to_pheno(shortest_route,cities)
             print(f'Shortest tour for {i} cities:\n{phenotype}')
 
-
-def reader(filename):
-
-    with open(filename, "r") as f:
-        data = list(csv.reader(f, delimiter=';'))
-
-    cities = []
-    distances = np.zeros((len(data)-1,len(data)-1))
-    city_line = 0
-
-    for line in data:
-        if city_line == 0:
-             for i in range(len(line)):
-                 cities.append(line[i])
-        else:
-            for i in range(len(line)):
-                distances[city_line - 1,i] = line[i]
-
-        city_line += 1
-    return cities, distances
 
 if __name__ == '__main__':
     cities, distances = reader("european_cities.csv")
