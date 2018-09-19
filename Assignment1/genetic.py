@@ -216,20 +216,20 @@ def plotter(fit, pop_size, gens, name):
 if __name__ == '__main__':
         cities, distances = reader("european_cities.csv")
         # 10 cities
-        # num_cities = 10
+        num_cities = 10
         runs = 20
         all_stars_fitness = []
-        # population_size= [ 50, 100, 150]
-        # generations = 50
-        #
-        #
-        # for pop in population_size:
-        #     fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
-        #     all_stars_fitness.append(fit)
-        #
-        # print(all_stars_fitness)
-        # plotter(all_stars_fitness, population_size, generations,'ga_plt_10.png')
-        #
+        population_size= [ 50, 100, 150]
+        generations = 50
+
+
+        for pop in population_size:
+            fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
+            all_stars_fitness.append(fit)
+
+            print(all_stars_fitness)
+            plotter(all_stars_fitness, population_size, generations,'ga_plt_10.png')
+
 
 
         # 24 cities

@@ -1,3 +1,5 @@
+GENETIC:
+
 10 cities, with 50 population and 50 generations:
  Length best tour: 7486.31.
  Length of worst tour: 13082.20.
@@ -57,3 +59,46 @@
  Route of the best tour is: ['Hamburg', 'Copenhagen', 'Stockholm', 'Warsaw', 'Saint Petersburg', 'Moscow', 'Kiev', 'Bucharest', 'Istanbul', 'Sofia', 'Belgrade', 'Rome', 'Milan', 'Barcelona', 'Madrid', 'Dublin', 'London', 'Paris', 'Brussels', 'Munich', 'Vienna', 'Budapest', 'Prague', 'Berlin']
  Searched 600000 routes.
  Runtime: 166.3824
+
+
+
+ HYBRID :
+
+ Lamarckian: 10 cities, with 50 population and 50 generations:
+  Length best tour: 7486.31.
+  Length of worst tour: 10304.37.
+  Length of average tour: 7528.05.
+  Standard deviation is: 219.28808361532802.
+  Route of the best tour is: ['Copenhagen', 'Hamburg', 'Brussels', 'Dublin', 'Barcelona', 'Belgrade', 'Istanbul', 'Bucharest', 'Budapest', 'Berlin']
+  Searched 50980 routes.
+  Runtime: 9.5032
+
+
+ Baldwinian: 10 cities, with 50 population and 50 generations:
+  Length best tour: 7486.31.
+  Length of worst tour: 10304.37.
+  Length of average tour: 7548.83.
+  Standard deviation is: 320.78448135236073.
+  Route of the best tour is: ['Copenhagen', 'Hamburg', 'Brussels', 'Dublin', 'Barcelona', 'Belgrade', 'Istanbul', 'Bucharest', 'Budapest', 'Berlin']
+  Searched 50980 routes.
+  Runtime: 11.4831
+
+
+ Lamarckian: 24 cities, with 100 population and 100 generations:
+  Length best tour: 12287.07.
+  Length of worst tour: 17728.28.
+  Length of average tour: 12806.01.
+  Standard deviation is: 413.3071816662872.
+  Route of the best tour is: ['Budapest', 'Vienna', 'Warsaw', 'Berlin', 'Prague', 'Munich', 'Milan', 'Rome', 'Barcelona', 'Madrid', 'Dublin', 'London', 'Paris', 'Brussels', 'Hamburg', 'Copenhagen', 'Stockholm', 'Saint Petersburg', 'Moscow', 'Kiev', 'Bucharest', 'Istanbul', 'Sofia', 'Belgrade']
+  Searched 200000 routes.
+  Runtime: 139.8681
+
+
+ Baldwinian: 24 cities, with 100 population and 100 generations:
+  Length best tour: 12325.93.
+  Length of worst tour: 17260.79.
+  Length of average tour: 12864.27.
+  Standard deviation is: 393.46614619400503.
+  Route of the best tour is: ['Warsaw', 'Vienna', 'Budapest', 'Belgrade', 'Sofia', 'Istanbul', 'Bucharest', 'Kiev', 'Moscow', 'Saint Petersburg', 'Stockholm', 'Copenhagen', 'Berlin', 'Hamburg', 'Brussels', 'Paris', 'London', 'Dublin', 'Madrid', 'Barcelona', 'Rome', 'Milan', 'Munich', 'Prague']
+  Searched 200000 routes.
+  Runtime: 142.9744

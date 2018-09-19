@@ -5,7 +5,7 @@ import numpy as np
 from functions import *
 import matplotlib.pyplot as plt
 import time
-from genetic import make_population, pair_pmx
+from genetic import make_population, pair_pmx, mutate_citizen
 
 
 def hill_climb_hybrid(cities,distances,geno):
@@ -15,7 +15,7 @@ def hill_climb_hybrid(cities,distances,geno):
     #print(geno)
 
 
-    for i in range(20):
+    for i in range(5):
         random_genes = random.sample(list(geno),2)
         #print(random_genes)
         geno[random_genes[0]], geno[random_genes[1]] = geno[random_genes[1]], geno[random_genes[0]]
@@ -49,7 +49,7 @@ def parent_selection_hybrid(population, distances, selection_size, string):
 # now genomes and distances from originals are saved!
     selection_distances = []
     # if Lamarckian we use the new genomes for parents based on new fitness for selecting parents.
-    if string == 'Lam':
+    if string == 'Lamarckian':
         shortest_route_index = np.argmin(distances_from_hc)
         parent_one = hc_with_geno_saved[shortest_route_index]
         hc_with_geno_saved.pop(shortest_route_index)
@@ -109,7 +109,6 @@ def hybrid(cities, distances, population_size, max_generations, selection_size, 
             for i in range(population_size):
 
                 if random.uniform(0.0, 1.0) < mutation_rate:
-        
                     new_population[i] = mutate_citizen(new_population[i])
 
 
@@ -182,7 +181,7 @@ def hybrid_start(cities, distances, population_size, max_generations, num_cities
         phenotype = geno_to_pheno(glb_best_route, cities)
         ret_fit = planet_fittnes.mean(axis=0)
 
-        print(f'{num_cities} cities, with {population_size} population and {max_generations} generations:\n Length best tour: {glb_best_distance:2.2f}.\n Length of worst tour: {glb_worst_dist:2.2f}.\n Length of average tour: {glb_average_dist:2.2f}.\n Standard diviation is: {glb_std}.\n Route of the best tour is: {phenotype}\n Searched {total_searched} routes.\n Runtime: {end_time:2.4f}\n\n')
+        print(f'{string}: {num_cities} cities, with {population_size} population and {max_generations} generations:\n Length best tour: {glb_best_distance:2.2f}.\n Length of worst tour: {glb_worst_dist:2.2f}.\n Length of average tour: {glb_average_dist:2.2f}.\n Standard deviation is: {glb_std}.\n Route of the best tour is: {phenotype}\n Searched {total_searched} routes.\n Runtime: {end_time:2.4f}\n\n')
 
         return ret_fit
 
@@ -213,26 +212,27 @@ if __name__ == '__main__':
         num_cities = 10
         runs = 20
         all_stars_fitness = []
-        population_size= 100
+        population_size= 50
         generations = 50
 
-        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Lam")
+        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Lamarckian")
         all_stars_fitness.append(fit)
-        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Bal")
+        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Baldwinian")
         all_stars_fitness.append(fit)
         plotter(all_stars_fitness, population_size, generations,'hybrid_10.png')
 
-        exit(0)
-        np.empty(all_stars_fitness)
 
-        # 10 cities
+        all_stars_fitness_24 = []
+
+        # 24 cities
         num_cities = 24
         runs = 20
         all_stars_fitness = []
-        population_size = 200
+        population_size = 100
         generations = 100
 
-        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Lam")
-        all_stars_fitness.append(fit)
-        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Bal")
-        plotter(all_stars_fitness, population_size, generations,'hybrid_24.png')
+        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Lamarckian")
+        all_stars_fitness_24.append(fit)
+        fit = hybrid_start(cities, distances, population_size, generations, num_cities,runs, "Baldwinian")
+        all_stars_fitness_24.append(fit)
+        plotter(all_stars_fitness_24, population_size, generations,'hybrid_24.png')
