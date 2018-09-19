@@ -2,12 +2,12 @@
 '''
 Code based on solutions for week 2 tasks. Thank you TA, you are the MVP
 '''
-import csv
 from random import shuffle , sample, randint, random
 import time
 import numpy as np
 from sys import exit
 import matplotlib.pyplot as plt
+from functions import *
 
 
 def make_population(size,N):
@@ -144,11 +144,11 @@ def genetic(cities, distances, population_size, max_generations, selection_size,
     #Average distance last generation
     average_distance = np.sum(population_distances)/len(population_distances)
 
-    #Standard_diviation
-    standard_diviation = np.std(population_distances)
+    #Standard_deviation
+    standard_deviation = np.std(population_distances)
 
     return best_individual_distance, best_individual_route, worst_individual_distance, average_distance,\
-    standard_diviation, average_fitness, searched
+    standard_deviation, average_fitness, searched
 
 def genetic_start(cities, distances, population_size, max_generations, num_cities,runs):
 
@@ -189,7 +189,7 @@ def genetic_start(cities, distances, population_size, max_generations, num_citie
         phenotype = geno_to_pheno(glb_best_route, cities)
         ret_fit = planet_fittnes.mean(axis=0)
 
-        print(f'{num_cities} cities, with {population_size} population and {max_generations} generations:\n Length best tour: {glb_best_distance:2.2f}.\n Length of worst tour: {glb_worst_dist:2.2f}.\n Length of average tour: {glb_average_dist:2.2f}.\n Standard diviation is: {glb_std}.\n Route of the best tour is: {phenotype}\n Searched {total_searched} routes.\n Runtime: {end_time:2.4f}\n\n')
+        print(f'{num_cities} cities, with {population_size} population and {max_generations} generations:\n Length best tour: {glb_best_distance:2.2f}.\n Length of worst tour: {glb_worst_dist:2.2f}.\n Length of average tour: {glb_average_dist:2.2f}.\n Standard deviation is: {glb_std}.\n Route of the best tour is: {phenotype}\n Searched {total_searched} routes.\n Runtime: {end_time:2.4f}\n\n')
 
         return ret_fit
 
@@ -216,21 +216,21 @@ def plotter(fit, pop_size, gens, name):
 if __name__ == '__main__':
         cities, distances = reader("european_cities.csv")
         # 10 cities
-        num_cities = 10
+        # num_cities = 10
         runs = 20
         all_stars_fitness = []
-        population_size= [ 50, 100, 150]
-        generations = 50
+        # population_size= [ 50, 100, 150]
+        # generations = 50
+        #
+        #
+        # for pop in population_size:
+        #     fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
+        #     all_stars_fitness.append(fit)
+        #
+        # print(all_stars_fitness)
+        # plotter(all_stars_fitness, population_size, generations,'ga_plt_10.png')
+        #
 
-
-        for pop in population_size:
-            fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
-            all_stars_fitness.append(fit)
-
-        print(all_stars_fitness)
-        plotter(all_stars_fitness, population_size, generations,'ga_plt_10.png')
-
-        exit(0)
 
         # 24 cities
         np.empty(all_stars_fitness)
