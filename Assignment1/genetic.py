@@ -227,19 +227,18 @@ if __name__ == '__main__':
             fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
             all_stars_fitness.append(fit)
 
-            print(all_stars_fitness)
-            plotter(all_stars_fitness, population_size, generations,'ga_plt_10.png')
+        plotter(all_stars_fitness, population_size, generations,'ga_plt_10.png')
 
 
 
         # 24 cities
-        np.empty(all_stars_fitness)
+        all_stars_fitness_24 = []
         num_cities = 24
         population_size = [100, 200, 300]
         generations = 100
 
         for pop in population_size:
             fit = genetic_start(cities, distances, pop, generations, num_cities,runs)
-            all_stars_fitness.append(fit)
+            all_stars_fitness_24.append(fit)
 
-        plotter(all_stars_fitness, population_size, generations,'ga_plt_24.png')
+        plotter(all_stars_fitness_24, population_size, generations,'ga_plt_24.png')

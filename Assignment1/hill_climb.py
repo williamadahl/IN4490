@@ -9,8 +9,6 @@ from functions import *
 def hill_climb(cities,distances,number):
 
     shortest_route = list(range(number))
-    print(shortest_route)
-    exit(0)
     random.shuffle(shortest_route)
     best_distance = calculate_distance(shortest_route,distances)
 
