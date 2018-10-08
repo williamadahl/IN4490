@@ -13,6 +13,9 @@ class mlp:
         self.momentum = 0.0
         ninputs = len(inputs[0]) + 1 # one extra for our bias, which is not included in the dataset
         noutput = len(targets[0])
+        self.nhidden = nhidden
+        self.ninputs = ninputs
+
         #print(ninputs)
         #hidden layer weights: Creting a matrix is easiest for keeping track...
         self.hlw = np.random.uniform(-1,1,(nhidden,ninputs)) # hidden*input+bias, remember to not use
@@ -30,6 +33,12 @@ class mlp:
         print('valid\n', valid[0]) # validation set
         print('validtargets\n', validtargets[0]) # validation targets for our test
 
+        # can do a test first and check vs error, if worse go train more. while true
+        #hidden_output = train(self.hlw, inputs)
+        #print(hidden_output)
+        hidden_output, final_output = self.forward(inputs)
+        print(hidden_output)
+        print(final_output)
 
 
         print('To be implemented')
@@ -38,9 +47,19 @@ class mlp:
         print('To be implemented')
 
     def forward(self, inputs):
-        print(self)
+        # inner layer output
+        print(inputs[0])
+        print('this ex')
+        print(self.hlw[0])
 
-        print('To be implemented')
+        hidden_out = self.matrix(inputs)
+        print(hidden_out)
+        # send to sigmoid
+        # outer layer output
+        final_output = self.matrix(hidden_out)
+        print(final_output)
+        # send to sigmoid
+        return hidden_out, final_output
 
     def confusion(self, inputs, targets):
         print('To be implemented')
@@ -51,13 +70,22 @@ class mlp:
         return weightedsum
 
     # helper funcion for calulating weightetsum for each neuron
-    def matrix(inputs, weights):
+    def matrix(self, inputs):
         weightedsum = []
-        for i in range(nhidden):
-                answ = 0
-                for j in range(len(weights[0])-1):
-                    answ += weights[i][j]*inputs[j]
-                answ += weights[i][ninputs-1] * self.bias
-                weightedsum.append(answ)
+        print('here is nhidden', self.nhidden)
+        print('here is hlw[0][0]',self.hlw[0][0])
+
+        for i in range(self.nhidden):
+            print('i',i)
+            answ = 0
+            print(len(self.hlw[0]))
+            print(len(self.hlw[1]))
+            print(len(self.hlw[11]))
+            print(inputs[0])
+            for j in range(len(self.hlw[0])-1):
+                print('j',j)
+                answ += self.hlw[i][j]*inputs[j]
+            answ += self.hlw[i][self.ninputs-1] * self.bias
+            weightedsum.append(answ)
 
         return weightedsum
