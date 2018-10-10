@@ -18,25 +18,29 @@ def sigmoid(weightedsum):
     weightedsum = [1/1+np.exp(-beta * weightedsum[i]) for i in range(len(weightedsum))]
     print(weightedsum)
 
-def matrix(inputs, weights,nhidden):
+def matrix(inputs, weights,nhidden, number):
     weightedsum = []
-    for i in range(nhidden):
-        answ = 0
-        for j in range(len(weights[0])-1):
-            answ += weights[i][j]*inputs[j]
-        answ += weights[i][ninputs-1] * bias
-        weightedsum.append(answ)
+    print(inputs[number][1])
+    for x in range(2):
+
+        for i in range(nhidden):
+            answ = 0
+            for j in range(len(weights[0])-1):
+                answ += weights[i][j]*inputs[x][j]
+                answ += weights[i][ninputs-1] * bias
+                weightedsum.append(answ)
     return weightedsum
 
 if __name__ == '__main__':
-    inputs = [1,2,3,4]
+    inputs = [[1,2,3,4],[4,3,2,1]]
     bias = 0.5
     beta = 1
     weights = [[1,1,1,1,1],[-2,-2,-2,-2,-2],[3,3,3,3,3]]
     nhidden = 3
     ninputs = 4
+    number = 0
 
-    weightedsum = matrix(inputs,weights,nhidden)
+    weightedsum = matrix(inputs,weights,nhidden,number)
     print(weightedsum)
     new = sigmoid(weightedsum)
     print(new)
