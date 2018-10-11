@@ -9,6 +9,7 @@ from sklearn.metrics import confusion_matrix
 
 class mlp:
     def __init__(self, inputs, targets, nhidden):
+    #    nhidden = 3
         self.beta = 1
         self.bias = 1
         self.eta = 0.1 # learning rate
