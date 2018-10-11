@@ -67,7 +67,7 @@ def update_inner(weights2, eta, inn, error):
     print('error: ',np.shape(error))
     print('inn: ',np.shape(inn))
 
-    
+
 
 
     for i in range(len(weights2)):
@@ -76,6 +76,24 @@ def update_inner(weights2, eta, inn, error):
             weights2[i][j] = (weights2[i][j]-(eta*error[i]*inn[j]))
 
     print(weights2)
+# new_error = np.sum((o - validtargets)**2) / n
+def sum_squares(real, target):
+    #print(real)
+    #print(target)
+    error = np.sum((np.array(real)-np.array(target))**2)/len(target)
+    #print(error )
+    print(np.argmax(real))
+    print(np.argmax(target))
+
+    # for i in range(2):
+    #     test = []
+    #     for j in range(3):
+    #         numb = np.random.rand(1,3)
+    #         print(numb)
+    #         test.append(numb)
+    #     print('what',test)
+
+
 
 if __name__ == '__main__':
     # inputs = [[1,2,3,4],[4,3,2,1]]
@@ -88,14 +106,16 @@ if __name__ == '__main__':
     # ninputs = 4
     # number = 0
 #    delta_hidden = error_test(delta_hidden, weights2,errors)
-
+    real = [1,2,3]
+    target = [1,1,1]
+    sum_squares(real,target)
 
     weights2 = [[1,2,3],[2,2,2]]
     eta = 0.1
     inn = [1,2,1]
     error = [0.5, 1]
     #new_weights = update_weights_outer(weights2, eta, hidden_activate,errors)
-    update_inner(weights2, eta, inn, error)
+#    update_inner(weights2, eta, inn, error)
 #weightedsum = matrix(inputs,weights,nhidden,number)
     #print(weightedsum)
     #new = sigmoid(weightedsum)
