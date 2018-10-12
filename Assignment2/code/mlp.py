@@ -6,10 +6,12 @@ import numpy as np
 import random
 import sys
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+
 
 class mlp:
     def __init__(self, inputs, targets, nhidden):
-    #    nhidden = 3
+        #nhidden = 3
         self.beta = 1
         self.bias = 1
         self.eta = 0.1 # learning rate
@@ -31,32 +33,35 @@ class mlp:
 
     def earlystopping(self, inputs, targets, valid, validtargets):
 
+        best_guess = 0
+
         while 1:
             #average_error_list = []
             self.train(inputs, targets, 1) # actuall training
-        #    error_list = [] # list of all errors, fresh for each iteration of training
-            #iterate over trainingset to create an average error
-
             correct_guesses = 0
+
             for i in range(len(valid)):
                 hidden , output = self.forward(valid[i]) # the testing
                 index_validtargets = np.argmax(validtargets[i])
                 index_output = np.argmax(output)
-            #    print('Valid target : ', validtargets[i])
-                #print('ouptut : ', output)
                 if(index_validtargets == index_output):
                     correct_guesses += 1
 
-            #average_error = np.mean(error_list)
-            #average_error_list.append(average_error)
-            print('number of correct guesses: ', correct_guesses)
 
-        #    print(average_error_list)
+            if correct_guesses >= best_guess:
+                best_guess = correct_guesses
+
+            print('number of correct guesses: ', correct_guesses)
+            print('best guess so far is: ', best_guess)
+
             # of we get a prediction of about 90% we can be happy and end the training
-            # can implement exit if x number of iterations does not yeild improvement
-            if correct_guesses >= 80:
+            # the same goes for the case where the network is overtraining, and we need to stop within a decent level
+            if (correct_guesses >= 100) or ((best_guess - correct_guesses) > self.nhidden):
                 break
 
+# /# TODO:  make a oneliner of this
+#             if (best_guess - correct_guesses ) > 4:
+#                 break
 
     def train(self, inputs, targets, iterations):
         for it in range(iterations):
@@ -135,10 +140,10 @@ class mlp:
             index = np.argmax(targets[i])
             actual[i] += index
 
-        #print(actual)
-        #print(predicted)
         result = confusion_matrix(actual, predicted)
+        score = accuracy_score(actual, predicted, normalize=True, sample_weight=None)
         print(result)
+        print(score)
 
 
     # this is a linear function, might change this later, but ill let it stand for now.
@@ -172,3 +177,18 @@ class mlp:
             weightedsum.append(answ)
         #returns an array of the weighted sums.
         return weightedsum
+
+'''
+Section for comments to report.
+
+To test how the notwork performes with different ammounts of hidde nodes, I choose to test for n = 3,6,9 and 12. I choose to let the neural network continue to train until it reached one of two conditions. Either that it is successfull in classifying 100 out of 112 validation targets(which translates roughly to about 90%  correct classifications), or that the current ammount of correct guesses has fallen by  the number of hidden nodes in the network compared to the best guess so far. This way the network shold not ovretrain to much, and should not continue running indefinetly. By setting the treshold to a dynamic value, the network is better suited for different number of hidden nodes.It also gives the neural netork a chance to escape a local optima, and continue to climb to a potentional better solution.
+
+ Since all the weights are initiated at random, there can be a large gap in performance after the networks first iteration of training. Some times the network will be as successfull as a middle 80s correct predictions after the first training itration, and other times, the network only performes a low 60.
+
+Here are the results for the different ammount of hidden nodes:
+
+
+As to what percentile correct guesses would be 'well classifications' is very dependant on the application of the network. Since we are implementing a prosthetic hand controller (PHC), I would guess that the poor fella using this prosthetic hand, would not be to happy with classifications below or very close to 100%  as his/hers day would be quite misserable as this number decreases. But for an assignment in a 10 credit course in an univerisity, we could accept a classiication abowe 80%. 
+
+
+'''
