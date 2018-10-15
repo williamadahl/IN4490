@@ -7,6 +7,7 @@
 # Feel free to use numpy in your MLP if you like to.
 import numpy as np
 import mlp
+import os
 
 filename = '../data/movements_day1-3.dat'
 
@@ -40,6 +41,9 @@ target = target[order,:]
 # Training updates the weights of the network and thus improves the network
 train = movements[::2,0:40]
 train_targets = target[::2]
+print(len(train[0]))
+print(len(train_targets[0]))
+exit(0)
 
 # Validation checks how well the network is performing and when to stop
 valid = movements[1::4,0:40]
@@ -62,4 +66,4 @@ net.earlystopping(train, train_targets, valid, valid_targets)
 #       This is a matter of preference.
 
 # Check how well the network performed:
-net.confusion(test,test_targets)
+dummy = net.confusion(test,test_targets)

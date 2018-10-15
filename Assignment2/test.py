@@ -4,6 +4,7 @@
 """
 import numpy as np
 import random
+from collections import deque
 
         # ninputs = len(inputs[0]) + 1 # one extra for our bias, which is not included in the dataset
         # noutput = len(targets[0])
@@ -94,6 +95,38 @@ def sum_squares(real, target):
     #     print('what',test)
 
 
+def shift(sequence, shift):
+    return sequence[-shift:] + sequence[:-shift]
+
+
+def datasplit(data, targets, folds):
+
+    # print('Befor shift: ', data)
+    # data = shift(data,1)
+    # print('After shift : ', data)
+    #
+
+    foldsize = len(data)//folds
+    test_start_index = 0
+    test_end_index = foldsize
+
+    valid_start_index = foldsize
+    valid_stop_index = foldsize*2
+
+    training_start_index = valid_stop_index + foldsize
+
+    for i in range(len(data)):
+        print('Fold number : ',i)
+        test_data = data[0:foldsize]
+        valid_data = data[valid_start_index:valid_stop_index]
+        training_data = data[training_start_index:]
+        print('TEST: ', test_data)
+        print('VALID: ', valid_data)
+        print('TRAINING', training_data)
+        print('THIS IS DATA : ', data)
+        data = shift(data,3)
+        print('THIS IS DATA AFTER: ', data)
+
 
 if __name__ == '__main__':
     # inputs = [[1,2,3,4],[4,3,2,1]]
@@ -108,15 +141,19 @@ if __name__ == '__main__':
 #    delta_hidden = error_test(delta_hidden, weights2,errors)
     real = [1,2,3]
     target = [1,1,1]
-    sum_squares(real,target)
+    #sum_squares(real,target)
 
     weights2 = [[1,2,3],[2,2,2]]
     eta = 0.1
     inn = [1,2,1]
     error = [0.5, 1]
+    folds = 4
+    data = [[1,1,1],[2,2,2],[3,3,3],[4,4,4],[5,5,5],[6,6,6]]
+    targets = [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1]]
+    datasplit(data, targets, folds)
     #new_weights = update_weights_outer(weights2, eta, hidden_activate,errors)
-#    update_inner(weights2, eta, inn, error)
-#weightedsum = matrix(inputs,weights,nhidden,number)
+    #update_inner(weights2, eta, inn, error)
+    #weightedsum = matrix(inputs,weights,nhidden,number)
     #print(weightedsum)
     #new = sigmoid(weightedsum)
     #print(new)

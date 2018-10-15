@@ -4,7 +4,6 @@
 """
 import numpy as np
 import random
-import sys
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 
@@ -51,12 +50,13 @@ class mlp:
             if correct_guesses >= best_guess:
                 best_guess = correct_guesses
 
-            print('number of correct guesses: ', correct_guesses)
-            print('best guess so far is: ', best_guess)
-
+            print('Number of correct guesses: ', correct_guesses)
+            print('Best guess so far is: ',best_guess)
+            #print('Number of targehts:', len(valid), round(len(valid)*0.9))
             # of we get a prediction of about 90% we can be happy and end the training
-            # the same goes for the case where the network is overtraining, and we need to stop within a decent level
-            if (correct_guesses >= 100) or ((best_guess - correct_guesses) > self.nhidden):
+            # the same goes for the case where the network is overtraining, and we need to stop within a decent level since the neural network now is not very generalized, but rather spicialzied on the trainingset
+
+            if (correct_guesses >= round(len(valid)*0.9)) or ((best_guess - correct_guesses) > self.nhidden):
                 break
 
 # /# TODO:  make a oneliner of this
@@ -142,9 +142,11 @@ class mlp:
 
         result = confusion_matrix(actual, predicted)
         score = accuracy_score(actual, predicted, normalize=True, sample_weight=None)
-        print(result)
-        print(score)
 
+        print(f'\n\nNumber of hidden nodes: {self.nhidden}\n\n Confusion matrix:\n{result}')
+        score = score*100
+        print(f'Correctness score: {score:2.2f}%')
+        return score
 
     # this is a linear function, might change this later, but ill let it stand for now.
     def activation_outer(self, weightedsum):
@@ -180,6 +182,9 @@ class mlp:
 
 '''
 Section for comments to report.
+remember overfitting!
+don't loose a potential better local optima for a weaker one.
+printing out correct guesses and the best guess each training round.
 
 To test how the notwork performes with different ammounts of hidde nodes, I choose to test for n = 3,6,9 and 12. I choose to let the neural network continue to train until it reached one of two conditions. Either that it is successfull in classifying 100 out of 112 validation targets(which translates roughly to about 90%  correct classifications), or that the current ammount of correct guesses has fallen by  the number of hidden nodes in the network compared to the best guess so far. This way the network shold not ovretrain to much, and should not continue running indefinetly. By setting the treshold to a dynamic value, the network is better suited for different number of hidden nodes.It also gives the neural netork a chance to escape a local optima, and continue to climb to a potentional better solution.
 
@@ -188,7 +193,7 @@ To test how the notwork performes with different ammounts of hidde nodes, I choo
 Here are the results for the different ammount of hidden nodes:
 
 
-As to what percentile correct guesses would be 'well classifications' is very dependant on the application of the network. Since we are implementing a prosthetic hand controller (PHC), I would guess that the poor fella using this prosthetic hand, would not be to happy with classifications below or very close to 100%  as his/hers day would be quite misserable as this number decreases. But for an assignment in a 10 credit course in an univerisity, we could accept a classiication abowe 80%. 
+As to what percentile correct guesses would be 'well classifications' is very dependant on the application of the network. Since we are implementing a prosthetic hand controller (PHC), I would guess that the poor fella using this prosthetic hand, would not be to happy with classifications below or very close to 100%  as his/hers day would be quite misserable as this number decreases. But for an assignment in a 10 credit course in an univerisity, we could accept a classiication abowe 80%.
 
-
+remember to save best weights so we can revert.
 '''
