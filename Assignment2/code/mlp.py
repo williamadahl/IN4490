@@ -1,16 +1,13 @@
-"""
-    This pre-code is a nice starting point, but you can
-    change it to fit your needs.
-"""
 import numpy as np
 import random
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+from copy import deepcopy
+
 
 
 class mlp:
     def __init__(self, inputs, targets, nhidden):
-        #nhidden = 3
         self.beta = 1
         self.bias = 1
         self.eta = 0.1 # learning rate
@@ -24,19 +21,18 @@ class mlp:
         self.hlw = np.random.uniform(-1,1,(nhidden,ninputs)) # hidden*input+bias, remember to not use
         self.olw = np.random.uniform(-1,1,(noutput, nhidden + 1)) #hidden+bias*output
 
-
-
-        print('To be implemented')
-
-    # You should add your own methods as well!
-
     def earlystopping(self, inputs, targets, valid, validtargets):
 
         best_guess = 0
+        strikes = 0
 
         while 1:
-            #average_error_list = []
-            self.train(inputs, targets, 1) # actuall training
+
+            if strikes == 10:
+                self.unlearn(best_innerweights, best_outerweights)
+                break
+
+            self.train(inputs, targets, 1)
             correct_guesses = 0
 
             for i in range(len(valid)):
@@ -46,22 +42,20 @@ class mlp:
                 if(index_validtargets == index_output):
                     correct_guesses += 1
 
-
             if correct_guesses >= best_guess:
+                strikes = 0
                 best_guess = correct_guesses
+                best_innerweights = deepcopy(self.hlw)
+                best_outerweights = deepcopy(self.olw)
+            else:
+                strikes += 1
 
-            print('Number of correct guesses: ', correct_guesses)
-            print('Best guess so far is: ',best_guess)
-            #print('Number of targehts:', len(valid), round(len(valid)*0.9))
-            # of we get a prediction of about 90% we can be happy and end the training
-            # the same goes for the case where the network is overtraining, and we need to stop within a decent level since the neural network now is not very generalized, but rather spicialzied on the trainingset
+            print('Best guess :',best_guess, '\tCurrent :',correct_guesses)
+            print('Number of strikes: ', strikes)
 
-            if (correct_guesses >= round(len(valid)*0.9)) or ((best_guess - correct_guesses) > self.nhidden):
+            if (correct_guesses >= round(len(valid)*0.9)):
                 break
 
-# /# TODO:  make a oneliner of this
-#             if (best_guess - correct_guesses ) > 4:
-#                 break
 
     def train(self, inputs, targets, iterations):
         for it in range(iterations):
@@ -70,10 +64,6 @@ class mlp:
                 hidden_out, final_output = self.forward(inputs[i])
                 #backward
                 self.back_prop(hidden_out,final_output,targets[i],inputs[i])
-
-
-# TODO: continue from this line
-
 
 
     def forward(self, vector):
@@ -98,7 +88,7 @@ class mlp:
         for i in range(len(self.hlw)):
             self.hlw[i][len(self.hlw[0])-1] = self.hlw[i][len(self.hlw[0])-1] - (self.eta*ei[i]*self.bias)
 
-    # hidden_output is the activation from hidden
+    # Hidden_output is the activation from hidden
     def update_weights_outer(self, hidden_output, eo):
         for i in range(len(self.olw)):
             for j in range(len(hidden_output)):
@@ -109,7 +99,6 @@ class mlp:
 
 
     # 4.9 from the book
-    # calculate the delta for each neuron in hidden layer
     def error_hidden(self, hidden_output, eo,targets):
         ei = []
         for i in range(len(hidden_output)):
@@ -132,7 +121,7 @@ class mlp:
         predicted = [0]*len(inputs)
 
         for i in range(len(inputs)):
-            hidden , output = self.forward(inputs[i]) # the testing
+            hidden , output = self.forward(inputs[i])
             index_out = np.argmax(output)
             predicted[i] += index_out
 
@@ -143,9 +132,9 @@ class mlp:
         result = confusion_matrix(actual, predicted)
         score = accuracy_score(actual, predicted, normalize=True, sample_weight=None)
 
-        print(f'\n\nNumber of hidden nodes: {self.nhidden}\n\n Confusion matrix:\n{result}')
+        print(f'\n\n-------------------------------\nNumber of hidden nodes: {self.nhidden}\n-------------------------------\nConfusion matrix:\n\n{result}')
         score = score*100
-        print(f'Correctness score: {score:2.2f}%')
+        print(f'\n-------------------------------\nCorrectness score: {score:2.2f}%\n-------------------------------')
         return score
 
     # this is a linear function, might change this later, but ill let it stand for now.
@@ -179,6 +168,12 @@ class mlp:
             weightedsum.append(answ)
         #returns an array of the weighted sums.
         return weightedsum
+
+    # "You must unlearn what you have learnt" -Grand Master Yoda
+    def unlearn(self, best_innerweights, best_outerweights):
+        self.hlw = deepcopy(best_innerweights)
+        self.olw = deepcopy(best_outerweights)
+
 
 '''
 Section for comments to report.

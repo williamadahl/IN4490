@@ -41,9 +41,6 @@ target = target[order,:]
 # Training updates the weights of the network and thus improves the network
 train = movements[::2,0:40]
 train_targets = target[::2]
-print(len(train[0]))
-print(len(train_targets[0]))
-exit(0)
 
 # Validation checks how well the network is performing and when to stop
 valid = movements[1::4,0:40]

@@ -79,37 +79,26 @@ net = mlp.mlp(train, train_targets, hidden)
 
 
 for i in range(folds):
-    #print('FOLD NUMBER: ', folds)
-    test_data = movements[0:foldsize,0:40]
-    #print(type(test_data),'Len:', len(test_data), len(test_data[0]))
 
+    test_data = movements[0:foldsize,0:40]
     test_targets = target[0:foldsize]
-    #print(type(test_targets),'Len:', len(test_targets), len(test_targets[0]))
 
     valid_data = movements[foldsize:foldsize*2,0:40]
-    #print('test:', valid_data[0], len(valid_data[0]))
     valid_targets = target[foldsize:foldsize*2]
-    #print(type(valid_data),'Len:', len(valid_data), len(valid_data[0]))
-    #print(type(valid_targets),'Len:', len(valid_targets), len(valid_targets[0]))
-
 
     training_data = movements[training_fold_start_index:,0:40]
     training_target = target[training_fold_start_index:]
-    #print(type(training_data),'Len:', len(training_data), len(training_data[0]))
-    #print(type(training_target),'Len:', len(training_target), len(training_target[0]))
+
+    net.earlystopping(training_data, training_target, valid_data, valid_targets)
+    dummy = net.confusion(test_data,test_targets)
 
     shift(movements, foldsize)
     shift(target, foldsize)
-
-
-
-    net.earlystopping(training_data, training_target, valid_data, valid_targets)
-
-
-    dummy = net.confusion(test_data,test_targets)
     score_array.append(dummy)
 
 
-
-print('Average correctness:', np.average(score_array))
-print('Average std diviation:', np.std(score_array))
+average = np.average(score_array)
+stddiv =  np.std(score_array)
+print('\n-------------------------------')
+print(f'Average correctness: {average:2.2f}%')
+print(f'Standard deviation: {stddiv:2.2f}')
