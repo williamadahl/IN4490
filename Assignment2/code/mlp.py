@@ -10,16 +10,16 @@ class mlp:
     def __init__(self, inputs, targets, nhidden):
         self.beta = 1
         self.bias = 1
-        self.eta = 0.1 # learning rate
+        self.eta = 0.1
         self.momentum = 0.0
-        ninputs = len(inputs[0]) + 1 # one extra for our bias, which is not included in the dataset
+        ninputs = len(inputs[0]) + 1 
         noutput = len(targets[0])
         self.output_nr = noutput
         self.nhidden = nhidden
         self.ninputs = ninputs
 
-        self.hlw = np.random.uniform(-1,1,(nhidden,ninputs)) # hidden*input+bias, remember to not use
-        self.olw = np.random.uniform(-1,1,(noutput, nhidden + 1)) #hidden+bias*output
+        self.hlw = np.random.uniform(-1,1,(nhidden,ninputs))
+        self.olw = np.random.uniform(-1,1,(noutput, nhidden + 1))
 
     def earlystopping(self, inputs, targets, valid, validtargets):
 
@@ -74,9 +74,9 @@ class mlp:
         return hidden_out, final_output
 
     def back_prop(self, hidden_output, final_output,targets,vector):
-        eo = self.error_outer(final_output, targets) # delta outer
-        ei = self.error_hidden(hidden_output,eo,targets) # delta inner
-        #ready to update values for olw.
+        eo = self.error_outer(final_output, targets)
+        ei = self.error_hidden(hidden_output,eo,targets)
+
         self.update_weights_outer(hidden_output, eo)
         self.update_weights_inner(vector,ei)
 
@@ -103,7 +103,6 @@ class mlp:
         ei = []
         for i in range(len(hidden_output)):
             answ = 0
-            # loop over all indexes downwards in the matrix
             for j in range(len(targets)):
                 answ += self.olw[j][i]*eo[j]
             ei.append(answ)
@@ -137,16 +136,16 @@ class mlp:
         print(f'\n-------------------------------\nCorrectness score: {score:2.2f}%\n-------------------------------')
         return score
 
-    # this is a linear function, might change this later, but ill let it stand for now.
+
     def activation_outer(self, weightedsum):
         return weightedsum
 
-    # helper function for sigmoid on each neuron
+    # Helper function for sigmoid on each neuron
     def sigmoid(self, weightedsum):
         weightedsum = [1/(1+np.exp(-self.beta *weightedsum[i])) for i in range(len(weightedsum))]
         return weightedsum
 
-    # helper funcion for calulating weightetsum for each neuron
+    # Helper funcion for calulating weightetsum for each neuron
     def matrix_hidden(self, vector):
         weightedsum = []
         for i in range(self.nhidden):
@@ -155,7 +154,6 @@ class mlp:
                 answ += self.hlw[i][j]*vector[j]
             answ += self.hlw[i][self.ninputs-1] * self.bias
             weightedsum.append(answ)
-        #returns an array of the weighted sums.
         return weightedsum
 
     def matrix_outer(self,hidden_out):
@@ -166,7 +164,6 @@ class mlp:
                 answ += self.olw[i][j]*hidden_out[j]
             answ += self.olw[i][(len(hidden_out))-1] * self.bias
             weightedsum.append(answ)
-        #returns an array of the weighted sums.
         return weightedsum
 
     # "You must unlearn what you have learnt" -Grand Master Yoda

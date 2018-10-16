@@ -7,7 +7,6 @@
 # Feel free to use numpy in your MLP if you like to.
 import numpy as np
 import mlp
-import os
 
 filename = '../data/movements_day1-3.dat'
 

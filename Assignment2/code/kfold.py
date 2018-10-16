@@ -7,17 +7,12 @@
 # Feel free to use numpy in your MLP if you like to.
 import numpy as np
 import mlp
-import os
 
-
+# Helper function to rotate the lists around.
 def shift(movements,foldsize):
-    # print(type(movements))
     movements = movements.tolist()
     movements = movements[-foldsize:] + movements[:-foldsize]
     movements = np.array(movements)
-    #print(len(movements))
-
-
 
 
 filename = '../data/movements_day1-3.dat'
@@ -47,11 +42,12 @@ np.random.shuffle(order)
 movements = movements[order,:]
 target = target[order,:]
 
+
+# Own code starts from here, the rest is copied from movements.py precode
+
 folds = 5
 
 foldsize = len(movements) // folds
-#print(foldsize)
-#exit(0)
 
 test_fold_start_index = 0
 test_fold_end_index = foldsize
@@ -61,20 +57,13 @@ validation_fold_stop_index = foldsize*2
 
 training_fold_start_index = validation_fold_stop_index
 
-#print('TEST: ', test_fold_start_index, '-', test_fold_end_index)
-#print('VALID: ',validation_fold_start_index, '-', validation_fold_stop_index)
-#print('TRAINING: ',training_fold_start_index, '-',len(movements))
-
 hidden = 12
 
+#Did this to init the network
 train = movements[::2,0:40]
 train_targets = target[::2]
-#print(len(train[0]))
-#print(len(train_targets[0]))
 
 score_array = []
-# Initialize the network:
-#net = mlp.mlp()
 net = mlp.mlp(train, train_targets, hidden)
 
 
