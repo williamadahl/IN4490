@@ -12,7 +12,7 @@ class mlp:
         self.bias = 1
         self.eta = 0.1
         self.momentum = 0.0
-        ninputs = len(inputs[0]) + 1 
+        ninputs = len(inputs[0]) + 1
         noutput = len(targets[0])
         self.output_nr = noutput
         self.nhidden = nhidden
@@ -170,22 +170,3 @@ class mlp:
     def unlearn(self, best_innerweights, best_outerweights):
         self.hlw = deepcopy(best_innerweights)
         self.olw = deepcopy(best_outerweights)
-
-
-'''
-Section for comments to report.
-remember overfitting!
-don't loose a potential better local optima for a weaker one.
-printing out correct guesses and the best guess each training round.
-
-To test how the notwork performes with different ammounts of hidde nodes, I choose to test for n = 3,6,9 and 12. I choose to let the neural network continue to train until it reached one of two conditions. Either that it is successfull in classifying 100 out of 112 validation targets(which translates roughly to about 90%  correct classifications), or that the current ammount of correct guesses has fallen by  the number of hidden nodes in the network compared to the best guess so far. This way the network shold not ovretrain to much, and should not continue running indefinetly. By setting the treshold to a dynamic value, the network is better suited for different number of hidden nodes.It also gives the neural netork a chance to escape a local optima, and continue to climb to a potentional better solution.
-
- Since all the weights are initiated at random, there can be a large gap in performance after the networks first iteration of training. Some times the network will be as successfull as a middle 80s correct predictions after the first training itration, and other times, the network only performes a low 60.
-
-Here are the results for the different ammount of hidden nodes:
-
-
-As to what percentile correct guesses would be 'well classifications' is very dependant on the application of the network. Since we are implementing a prosthetic hand controller (PHC), I would guess that the poor fella using this prosthetic hand, would not be to happy with classifications below or very close to 100%  as his/hers day would be quite misserable as this number decreases. But for an assignment in a 10 credit course in an univerisity, we could accept a classiication abowe 80%.
-
-remember to save best weights so we can revert.
-'''
