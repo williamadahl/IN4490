@@ -53,8 +53,9 @@ class mlp:
             print('Best guess :',best_guess, '\tCurrent :',correct_guesses)
             print('Number of strikes: ', strikes)
 
-            if (correct_guesses >= round(len(valid)*0.9)):
-                break
+            # removed this condition to improve training.
+            #if (correct_guesses >= round(len(valid)*0.9)):
+            #    break
 
 
     def train(self, inputs, targets, iterations):
@@ -114,7 +115,7 @@ class mlp:
         return(eo)
 
 
-    def confusion(self, inputs, targets):
+    def confusion(self, inputs, targets, fold):
 
         actual = [0]*len(inputs)
         predicted = [0]*len(inputs)
@@ -131,9 +132,14 @@ class mlp:
         result = confusion_matrix(actual, predicted)
         score = accuracy_score(actual, predicted, normalize=True, sample_weight=None)
 
-        print(f'\n\n-------------------------------\nNumber of hidden nodes: {self.nhidden}\n-------------------------------\nConfusion matrix:\n\n{result}')
-        score = score*100
-        print(f'\n-------------------------------\nCorrectness score: {score:2.2f}%\n-------------------------------')
+        if (fold == -1):
+            print(f'\n\n-------------------------------\nNumber of hidden nodes: {self.nhidden}\n-------------------------------\nConfusion matrix:\n\n{result}')
+            score = score*100
+            print(f'\n-------------------------------\nCorrectness score: {score:2.2f}%\n-------------------------------')
+        else:
+            print(f'\n\n-------------------------------\nFold number: {fold}\n-------------------------------\nConfusion matrix:\n\n{result}')
+            score = score*100
+            print(f'\n-------------------------------\nCorrectness score: {score:2.2f}%\n-------------------------------')
         return score
 
 

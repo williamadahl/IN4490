@@ -64,10 +64,12 @@ train = movements[::2,0:40]
 train_targets = target[::2]
 
 score_array = []
-net = mlp.mlp(train, train_targets, hidden)
 
 
 for i in range(folds):
+
+    # Init the network
+    net = mlp.mlp(train, train_targets, hidden)
 
     test_data = movements[0:foldsize,0:40]
     test_targets = target[0:foldsize]
@@ -79,7 +81,7 @@ for i in range(folds):
     training_target = target[training_fold_start_index:]
 
     net.earlystopping(training_data, training_target, valid_data, valid_targets)
-    dummy = net.confusion(test_data,test_targets)
+    dummy = net.confusion(test_data,test_targets,i)
 
     shift(movements, foldsize)
     shift(target, foldsize)

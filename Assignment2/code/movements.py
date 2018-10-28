@@ -61,5 +61,5 @@ net.earlystopping(train, train_targets, valid, valid_targets)
 #       and make train use earlystopping method.
 #       This is a matter of preference.
 
-# Check how well the network performed:
-dummy = net.confusion(test,test_targets)
+# Check how well the network performed: added dummy value for pretty print
+dummy = net.confusion(test,test_targets,-1)
