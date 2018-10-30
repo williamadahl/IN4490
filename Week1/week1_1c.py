@@ -11,13 +11,13 @@ def df(x):
     return -4*x**3 + 6*x**2 + 4*x -1
 
 def gradient_acent(x, step_size, precision):
-    dx = step_size * df(x)
+    dx = step_size * df(x)  # this is first calculation of random point. x = start.
     iterations = 0
     while abs(dx) > precision:
         iterations += 1
         plt.plot(x,f(x), color = "red", marker = "s", markersize=3)
-        x = x + dx
-        dx = step_size * df(x)
+        x = x + dx    # calcualate next
+        dx = step_size * df(x) # calculate next
     return x, f(x), iterations
 
 
@@ -39,7 +39,10 @@ if __name__ == '__main__':
 '''
 The choice of starting point and stepsize can have a lot to say for the performance. The most important is the step size since it will determine how many iterations we need until we fullfill the precision we want. start point can also affect performance, depending on if we are near a local or global max.
 
-I am not sure if there is one point where we would not find a local max, but maybe if we started in the global minimum or critical point. the abs(dx) would be 0, and therefore the algorithm would stop. Gradient acent/decent therefore has no guarantee for finding local max / min.
+I am not sure if there is one point where we would not find a local max, but maybe if we started in the global minimum or critical point. the abs(dx) would be 0, and therefore the algorithm would stop. Gradient acent/decent therefore has no guarantee for finding local max / min. This is correct!
 
-This is a continous optimization     
+Also, stepsize to large might bounce over solutions!
+Too low yields poor performance. 
+
+This is a continous optimization
 '''

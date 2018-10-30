@@ -38,6 +38,12 @@ if __name__ == '__main__':
 
 '''
 1e)
+ANSW:
+
+One way to introduce more exploration would be to start the algorithm at more than one starting point. This will explore the search landscape more and give us more local optima and maybe even global optima. Can also add more random movement to the algorithms. Like with annealing.
+
+We could choose more than one startig point, and store the different local maxes in a list, and from that list choose the maximal value. Aka random seeding.
+
 
 Greedy search would not change the delta value and therefore be less precise than the gradient max. it would also not get stuck at the critical point where the gradient accent might endself. Greedy also mostly get the local optimum, not the global optimum. We are dependent on a good granularity (small step size).
 
@@ -55,11 +61,9 @@ One point where they might differ is for x = 0.5. This gives the hill climber a 
 
 1f)
 
-We could choose more than one startig point, and store the different local maxes in a list, and from that list choose the maximal value. Aka random seeding.
+Which algorithm do you think is the most efficient at maximizing f(x)under the conditions in Problem 1.d; exhaustive search or simulated annealing? Explain.
 
-
-
-1g)
+Efficient means with least waste of time. But for this small problem the exhaustive search is fast as well, also it is more precise than sumulated annealing. But for multiple dimntion problems, exhautive search is not practical anymore, and simulated annealing will be best.
 
 Depends on the step size on exhaustive search. IF we have a large step size we compute faster, but the result is less precise. With simulated annealing, we need to do slow search to make sure to not overshoot the global max.
 
