@@ -1,0 +1,66 @@
+SUPPORT VECTOR MACHINES
+
+#QUESTION 1  SVM vs MLP
+What advantages and disadvantages are there to support vector machines (svm) versus multilayer perceptrons (mlp)? What problems do they both suffer from?
+-----------------------------------------------------------------------------------------------
+
+SVM:
++ Very good at classifying edge/extreme cases.
++ Can use kernels to modify the data plots and make it easier to create a classification line.
++ Guarantied optimal separation
++ Save storage by throwing away all other datapoints than the support vectors.
+- Find the appropriate kernel function is VERY hard!
+- Training is much slower than with neural nets. For the same set n, SVM is looking at O(n^2), while neural net training is O(n)
+- no not to well on very large data sets.
+
+Problems with both:
+- Multi dimensions, and many parameters to tune. The effect of this tuning can have quite unintuitive effects.
+- Both are prone to overfitting.
+
+
+#QUESTION 2  Kernel functions
+What is a kernel function? Which are the most common kernel functions and roughly what kind of transformations do they correspond to?
+-----------------------------------------------------------------------------------------------
+Kernel function is a way to modify the datapoints. Usually we perform a function on the datapoints to make them easier to separate. So if we have a input feature Xi we run a function on it Ø(Xi). It uses the inner product of the transformed datapoints. Since the w (dot) x just returns a scalar, it does not matter if the x is replaced by a higher dimension. It will still return a scalar. Using kernel functions also simplifies the calculation
+
+
+Some commonly used kernels are:
+* Polynomials: Transform into a polynomial space
+* Radial Basis Function: Results in high values near x followed by some spread sigma. Sigma can be used to adjust overfitting.
+* None: x(dot)y simply calculates the dotproduct, with no transformation.
+
+Need to read up more on these terms!
+
+
+#QUESTION 3  Soft Margins
+What two factors must be balanced when using an SVM with soft margin?
+-----------------------------------------------------------------------------------------------
+An SVM with soft margins means that we allow some of the training data to be miss classified. We do this to avoid overfitting to the training data but we still want to get as much as the training data outside of the margin. The two conflicting factors that must be balanced is classifying the data right, and avoid overfitting.
+
+
+#QUESTION 4  Ensemble
+Try to come up with a few cases when using an ensemble of classifiers where it would be fine to just pick the most popular class, and where you would want to have the majority in favor of a single class or even full consensus.
+-----------------------------------------------------------------------------------------------
+If all classifiers perform pretty much equally, we can choose the most popular class. If all classifiers perform differently, it would be wise to choose those that have consensus on the data set.
+REAL answer:
+It depends on how critical the precision has to be. If it is just a movie recommendation, a faulty classification is harmless. But if it is making some medical diagnosis, we would need ta ask a real doctor if there is disagreement in the ensemble. When in doubt it is best to guess or refuse to give an opinion.
+
+
+#QUESTION 5  Principle Component Analysis
+What is the motivation behind principle component analysis?
+-----------------------------------------------------------------------------------------------
+PCA tries to find the direction with highest variance/change/variation and then remove the other dimension / direction. This is done to reduce the number of dimensions. Other motivation is:
+* Make it easier to train the classifier since information is removed or make the classifier simpler and more efficient, reducing the computational complexity.
+* Make the data easier to visualize so it is easier to manually deduce patterns and help tune the classifier.
+
+6  Covariance
+Work out the covariance between the x and y dimensions of the following 2-dimensional data set. Describe what the results indicate about the data.
+-----------------------------------------------------------------------------------------------
+(see figure in week tasks.)
+
+First we need to calculate the arithmetic mean or the sample mean:
+x = (10 + 39 + 19 + 23 + 28)/5 = 23.8
+y = (43 + 13 + 32 + 21 + 20)/5 = 25.8
+
+cov(x,y) =  -96.44.
+We have a negative covariance, this means that the greater value of one variable corresponds to the lesser value of the other. The variables show opposite behavior. 

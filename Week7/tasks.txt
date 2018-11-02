@@ -1,0 +1,21 @@
+#QUESTION 1  Policies
+
+What policy would make on-policy and off-policy learning equivalent, specifically if we consider Q-learning and SARSA-learning? In other words, what policy used by an agent will make the learning based on Q-learning and SARSA-learning the same?
+-----------------------------------------------------------------------------------------------
+The main difference is that in Q-learning we try to take the optimal action without exploring the whole area of possibilities. While with SARSA-learning we have a chance of doing some random sub-optimal move, which results in more exploration.
+Q-learning is an off-policy algorithm, and SARSA is a on-policy algorithm. Since we ask for what kind of policy that would make them equivalent I would say Greedy policy, which is pure exploitation. Usually, SARSA uses E-greedy (epsilon greedy) policy.
+
+
+#QUESTION 2  Reinforcement learning for chess
+
+Imagine you were to design a reinforcement learning agent for playing chess. The state that the agent sees on its turn is the layout of the chess board. We can set the reward structure for the agent to be +1 for winning, -1 for losing, 0 for drawing, and 0 again for every move that does not lead to a win or loss. Such an agent will essentially learn to win. It will do so eventually after much exploration and a number of episodes, since it is always trying to maximize its expected return (cumulative rewards in the long run). What might happen if, in
+addition, we give a positive reward to the agent for taking its opponent’s pieces as well?
+-----------------------------------------------------------------------------------------------
+If we introduce such a reward, the agent will at least faster be much more aggressive on trying to take the opponent's pieces. It depends on the reward, but since the agent wishes to maximize reward it might try to take all pieces of the opponent before going for the other winning condition (check mate). If the total reward that can be accumulated by taking the opponents pieces is greater than the reward for winning the game, the agent might be content with loosing, as long as it has taken a lot of pieces. The problem here is that the reward should tell the agent what to to, not how to do it.
+
+
+#QUESTION 3  Large state/action spaces
+
+In most real world problems with large state/action spaces, quantizing the state/action space and using tables to store/update values, e.g. the Q table, is not feasible. Can you suggest a way for reinforcement learning algorithms to generalize to arbitrarily large real valued state/action spaces? Hint: The tables are approximating a value function, i.e. mapping a state-action pair to a value. What else could be used for function approximation?
+-----------------------------------------------------------------------------------------------
+Since we are going to store and update weight, we can perhaps use a neural network for this task. Input will be the state-action par, and the output will be the value for the state-action par. Value updates will happen via updating the weights. 
